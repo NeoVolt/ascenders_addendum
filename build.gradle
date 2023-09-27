@@ -137,7 +137,7 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    implementation fg.deobf("curse.maven:advent-of-ascension-nevermine-311054:4761313")
+    implementation fg.deobf("curse.maven:advent-of-ascension-nevermine-311054:$project.aoa_version")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

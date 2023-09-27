@@ -2,9 +2,9 @@
   "required": true,
   "package": "neovolt.ascenders_addendum.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "alteredarsenal.refmap.json",
+  "refmap": "ascenders_addendum.refmap.json",
   "mixins": [
-
+    "RuneConsumptionMixin"
   ],
   "client": [
 

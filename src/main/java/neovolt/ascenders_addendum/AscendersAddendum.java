@@ -1,13 +1,14 @@
 package neovolt.ascenders_addendum;
 
 import com.mojang.logging.LogUtils;
+import neovolt.ascenders_addendum.content.item.equipment.tools.RuneBatteryItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,7 +28,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.tslat.aoa3.common.registration.AoARegistries;
+import net.tslat.aoa3.common.registration.item.AoAItems;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(AscendersAddendum.MODID)
@@ -36,7 +41,7 @@ public class AscendersAddendum
     public static final String MODID = "ascenders_addendum";
 
     private static final Logger LOGGER = LogUtils.getLogger();
-    // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
+
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
@@ -45,16 +50,24 @@ public class AscendersAddendum
     //public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
     //public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block", () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties()));
 
-    // Creates a new food item with the id "examplemod:example_id", nutrition 1 and saturation 2
-    public static final RegistryObject<Item> EXAMPLE_ITEM = ITEMS.register("example_item", () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
-            .alwaysEat().nutrition(1).saturationMod(2f).build())));
 
-    // Creates a creative tab with the id "examplemod:example_tab" for the example item, that is placed after the combat tab
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+    //single-rune battery
+    public static final RegistryObject<Item> WIND_RUNE_BATTERY = ITEMS.register("wind_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.WIND_RUNE, 1024)));
+    //combo-rune battery
+    public static final RegistryObject<Item> NETHENGEIC_BATTERY = ITEMS.register("nethengeic_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new ArrayList<RuneBatteryItem.RuneSlot>() {{
+                add(new RuneBatteryItem.RuneSlot(AoAItems.FIRE_RUNE, 512, 1));
+                add(new RuneBatteryItem.RuneSlot(AoAItems.WITHER_RUNE, 512, 1));
+            }}));
+
+
+    public static final RegistryObject<CreativeModeTab> AMMO = CREATIVE_MODE_TABS.register("ammo", () -> CreativeModeTab.builder()
+            .withTabsBefore(CreativeModeTabs.COMBAT) //sets the tab to be directly after, todo: preferably set this to be after the AoA tabs for release
+            .icon(() -> WIND_RUNE_BATTERY.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(WIND_RUNE_BATTERY.get());
+                output.accept(NETHENGEIC_BATTERY.get());
             }).build());
 
     public AscendersAddendum()
@@ -72,7 +85,7 @@ public class AscendersAddendum
 
         modEventBus.addListener(this::addCreative);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -82,15 +95,15 @@ public class AscendersAddendum
 
         //LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        //Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
         //this method is just for if I want to add things to an existing tab
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+        //if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             //event.accept(EXAMPLE_BLOCK_ITEM);
-        }
+        //}
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
