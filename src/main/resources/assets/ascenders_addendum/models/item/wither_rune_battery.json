@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ascenders_addendum:item/equipment/tools/battery/wither_rune_battery"
+  }
+}

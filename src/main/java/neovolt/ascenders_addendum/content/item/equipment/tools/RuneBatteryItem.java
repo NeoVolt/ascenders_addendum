@@ -1,7 +1,6 @@
 package neovolt.ascenders_addendum.content.item.equipment.tools;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -12,16 +11,15 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RuneBatteryItem extends Item {
 
@@ -44,7 +42,7 @@ public class RuneBatteryItem extends Item {
         - add a sound when a battery reaches full capacity or is emptied completely
     */
 
-    private ArrayList<RuneSlot> runeSlots = new ArrayList<RuneSlot>();
+    private ArrayList<RuneSlot> runeSlots = new ArrayList<>();
     private int timeUntilRegen = 2400;
 
     // single-rune battery constructor
@@ -68,11 +66,15 @@ public class RuneBatteryItem extends Item {
         fixBrokenNBT(battery);
         ListTag listTag = battery.getOrCreateTag().getList("RuneSlots", 10);
         for (int i = 0; i < listTag.size(); i++) {
-            //long ass inefficient ass line of code right here
+            //long ass inefficient ass unreadable ass line of code right here
             //all in a day's work around these parts
-            tooltip.add(Component.literal(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(listTag.getCompound(i).get("id").getAsString()))).getDisplayName().getString()
-                    + ": " + listTag.getCompound(i).get("charge").getAsString() + "/" + listTag.getCompound(i).get("cap").getAsString()));
+            tooltip.add(Component.literal(getRuneSlotItemName(battery, i) + ": " + listTag.getCompound(i).get("charge").getAsString() + "/" + listTag.getCompound(i).get("cap").getAsString()).withStyle(ChatFormatting.GRAY));
         }
+    }
+
+    public String getRuneSlotItemName(ItemStack battery, int index) {
+        return new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(battery.getOrCreateTag().getList("RuneSlots", 10)
+                .getCompound(index).getString("id"))))).getHoverName().getString();
     }
 
     // handles adding the runes to the battery
@@ -113,7 +115,7 @@ public class RuneBatteryItem extends Item {
                 if(runeSlot.getInt("charge") >= runeSlot.getInt("cap"))
                     return;
 
-                addCharge(battery, i, runeSlot.getInt("baseRegen"));
+                addCharge(battery, i, runeSlot.getInt("regen"));
             }
         } else {
             this.timeUntilRegen -= 1;
@@ -123,15 +125,15 @@ public class RuneBatteryItem extends Item {
     // handles the addition of rune charges and the depletion of the stack the item was used on
     private boolean addChargeFromItem(ItemStack battery, ItemStack usedOn, ClickAction click, Player p, int index) {
         CompoundTag runeSlot = battery.getTag().getList("RuneSlots", 10).getCompound(index);
-        // left click
-        if(click == ClickAction.PRIMARY) {
+        // right click
+        if(click == ClickAction.SECONDARY) {
             if(runeSlot.getInt("charge") != runeSlot.getInt("cap")) {
                 addCharge(battery, index, 1);
                 usedOn.shrink(1);
                 return true;
             }
         } else
-        // right click
+        // left click
         if(runeSlot.getInt("charge") + usedOn.getCount() <= runeSlot.getInt("cap")) {
             addCharge(battery, index, usedOn.getCount());
             usedOn.shrink(usedOn.getCount());
@@ -156,8 +158,8 @@ public class RuneBatteryItem extends Item {
         CompoundTag compoundTag = battery.getOrCreateTag();
 
         ListTag listTag = compoundTag.getList("RuneSlots", 10); //todo: what is the 10 for??
-        for(int i = 0; i < runeSlots.size(); i++) {
-            listTag.add(runeSlots.get(i).toCompoundTag());
+        for (RuneSlot runeSlot : runeSlots) {
+            listTag.add(runeSlot.toCompoundTag());
         }
 
         compoundTag.put("RuneSlots", listTag);
@@ -179,45 +181,37 @@ public class RuneBatteryItem extends Item {
             if(!runeSlot.contains("cap") || runeSlot.getInt("cap") < 1)
                 runeSlot.putInt("cap", 1);
 
-            if(!runeSlot.contains("baseRegen"))
-                runeSlot.putShort("baseRegen", (short)0);
-
-            if(!runeSlot.contains("regenScale"))
-                runeSlot.putShort("regenScale", (short)2);
+            if(!runeSlot.contains("regen"))
+                runeSlot.putShort("regen", (short)0);
         }
     }
 
     // this is a RuneSlot, a class that's used for one specific thing:
     // telling the game which RuneSlot tags to auto-generate if there's none available
     public static class RuneSlot {
-        private RegistryObject<Item> item;
-        private int charge = 0;
-        private int cap = 0;
-        private int baseRegen = 0;
-        private int regenScale = 2;
+        private final RegistryObject<Item> item;
+        private final int cap;
+        private final int regen;
 
         public RuneSlot(RegistryObject<Item> item, int cap) {
             this.item = item;
             this.cap = Math.max(1, cap);
-            this.baseRegen = 0;
-            this.regenScale = 2;
+            this.regen = 0;
         }
 
-        public RuneSlot(RegistryObject<Item> item, int cap, int regenScale) {
+        public RuneSlot(RegistryObject<Item> item, int cap, int regen) {
             this.item = item;
             this.cap = Math.max(1, cap);
-            this.baseRegen = 0;
-            this.regenScale = regenScale;
+            this.regen = regen;
         }
 
         private CompoundTag toCompoundTag() {
             CompoundTag tag = new CompoundTag();
 
             tag.putString("id",item.getId().toString());
-            tag.putInt("charge",charge);
+            tag.putInt("charge",0);
             tag.putInt("cap",cap);
-            tag.putShort("baseRegen",(short)baseRegen);
-            tag.putShort("regenScale",(short)regenScale);
+            tag.putShort("regen",(short)regen);
 
             return tag;
         }

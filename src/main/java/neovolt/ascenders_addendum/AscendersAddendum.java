@@ -53,12 +53,39 @@ public class AscendersAddendum
 
     //single-rune battery
     public static final RegistryObject<Item> WIND_RUNE_BATTERY = ITEMS.register("wind_rune_battery", () ->
-            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.WIND_RUNE, 1024)));
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.WIND_RUNE, 256)));
+    public static final RegistryObject<Item> FIRE_RUNE_BATTERY = ITEMS.register("fire_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.FIRE_RUNE, 256)));
+    public static final RegistryObject<Item> WATER_RUNE_BATTERY = ITEMS.register("water_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.WATER_RUNE, 256)));
+    public static final RegistryObject<Item> WITHER_RUNE_BATTERY = ITEMS.register("wither_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.WITHER_RUNE, 256)));
+    public static final RegistryObject<Item> ENERGY_RUNE_BATTERY = ITEMS.register("energy_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.ENERGY_RUNE, 256)));
+    public static final RegistryObject<Item> LUNAR_RUNE_BATTERY = ITEMS.register("lunar_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.LUNAR_RUNE, 256)));
+    public static final RegistryObject<Item> KINETIC_RUNE_BATTERY = ITEMS.register("kinetic_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.KINETIC_RUNE, 256)));
+    public static final RegistryObject<Item> DISTORTION_RUNE_BATTERY = ITEMS.register("distortion_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.DISTORTION_RUNE, 256)));
+    public static final RegistryObject<Item> POISON_RUNE_BATTERY = ITEMS.register("poison_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.POISON_RUNE, 256)));
+    public static final RegistryObject<Item> STRIKE_RUNE_BATTERY = ITEMS.register("strike_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.STRIKE_RUNE, 256)));
+    public static final RegistryObject<Item> POWER_RUNE_BATTERY = ITEMS.register("power_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.POWER_RUNE, 256)));
+    public static final RegistryObject<Item> STORM_RUNE_BATTERY = ITEMS.register("storm_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.STORM_RUNE, 256)));
+    public static final RegistryObject<Item> LIFE_RUNE_BATTERY = ITEMS.register("life_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.LIFE_RUNE, 256)));
+    public static final RegistryObject<Item> COMPASS_RUNE_BATTERY = ITEMS.register("compass_rune_battery", () ->
+            new RuneBatteryItem(new Item.Properties(), new RuneBatteryItem.RuneSlot(AoAItems.COMPASS_RUNE, 256)));
+
     //combo-rune battery
     public static final RegistryObject<Item> NETHENGEIC_BATTERY = ITEMS.register("nethengeic_battery", () ->
             new RuneBatteryItem(new Item.Properties(), new ArrayList<RuneBatteryItem.RuneSlot>() {{
-                add(new RuneBatteryItem.RuneSlot(AoAItems.FIRE_RUNE, 512, 1));
-                add(new RuneBatteryItem.RuneSlot(AoAItems.WITHER_RUNE, 512, 1));
+                add(new RuneBatteryItem.RuneSlot(AoAItems.FIRE_RUNE, 128, 1));
+                add(new RuneBatteryItem.RuneSlot(AoAItems.WITHER_RUNE, 128, 1));
             }}));
 
 
@@ -67,6 +94,20 @@ public class AscendersAddendum
             .icon(() -> WIND_RUNE_BATTERY.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(WIND_RUNE_BATTERY.get());
+                output.accept(FIRE_RUNE_BATTERY.get());
+                output.accept(WATER_RUNE_BATTERY.get());
+                output.accept(WITHER_RUNE_BATTERY.get());
+                output.accept(ENERGY_RUNE_BATTERY.get());
+                output.accept(LUNAR_RUNE_BATTERY.get());
+                output.accept(KINETIC_RUNE_BATTERY.get());
+                output.accept(DISTORTION_RUNE_BATTERY.get());
+                output.accept(POISON_RUNE_BATTERY.get());
+                output.accept(STRIKE_RUNE_BATTERY.get());
+                output.accept(POWER_RUNE_BATTERY.get());
+                output.accept(STORM_RUNE_BATTERY.get());
+                output.accept(LIFE_RUNE_BATTERY.get());
+                output.accept(COMPASS_RUNE_BATTERY.get());
+
                 output.accept(NETHENGEIC_BATTERY.get());
             }).build());
 
@@ -85,6 +126,7 @@ public class AscendersAddendum
 
         modEventBus.addListener(this::addCreative);
 
+        //no config yet
         //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 

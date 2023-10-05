@@ -1,6 +1,19 @@
 {
   "values": [
     "ascenders_addendum:wind_rune_battery",
+    "ascenders_addendum:fire_rune_battery",
+    "ascenders_addendum:water_rune_battery",
+    "ascenders_addendum:wither_rune_battery",
+    "ascenders_addendum:energy_rune_battery",
+    "ascenders_addendum:lunar_rune_battery",
+    "ascenders_addendum:kinetic_rune_battery",
+    "ascenders_addendum:distortion_rune_battery",
+    "ascenders_addendum:poison_rune_battery",
+    "ascenders_addendum:strike_rune_battery",
+    "ascenders_addendum:power_rune_battery",
+    "ascenders_addendum:storm_rune_battery",
+    "ascenders_addendum:life_rune_battery",
+    "ascenders_addendum:compass_rune_battery",
     "ascenders_addendum:nethengeic_battery"
   ]
 }

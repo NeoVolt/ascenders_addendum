@@ -1,5 +1,18 @@
 {
-  "itemGroup.ascenders_addendum.ammunition": "AoA Ammunition",
+  "itemGroup.ascenders_addendum.ammo": "Ascender's Addendum Ammo",
   "item.ascenders_addendum.wind_rune_battery": "Wind Rune Battery",
+  "item.ascenders_addendum.fire_rune_battery": "Fire Rune Battery",
+  "item.ascenders_addendum.water_rune_battery": "Water Rune Battery",
+  "item.ascenders_addendum.wither_rune_battery": "Wither Rune Battery",
+  "item.ascenders_addendum.energy_rune_battery": "Energy Rune Battery",
+  "item.ascenders_addendum.lunar_rune_battery": "Lunar Rune Battery",
+  "item.ascenders_addendum.kinetic_rune_battery": "Kinetic Rune Battery",
+  "item.ascenders_addendum.distortion_rune_battery": "Distortion Rune Battery",
+  "item.ascenders_addendum.poison_rune_battery": "Poison Rune Battery",
+  "item.ascenders_addendum.strike_rune_battery": "Strike Rune Battery",
+  "item.ascenders_addendum.power_rune_battery": "Power Rune Battery",
+  "item.ascenders_addendum.storm_rune_battery": "Storm Rune Battery",
+  "item.ascenders_addendum.life_rune_battery": "Life Rune Battery",
+  "item.ascenders_addendum.compass_rune_battery": "Compass Rune Battery",
   "item.ascenders_addendum.nethengeic_battery": "Nethengeic Battery"
 }
